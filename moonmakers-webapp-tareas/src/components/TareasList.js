@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/components/TareasList.css"
 
 function TareasList(props) {
   return (

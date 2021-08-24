@@ -1,7 +1,8 @@
 import React from "react";
+import "../css/components/Search.css"
 
 function Search() {
-  return <input placeholder="buscar" />;
+  return <input className="Search" placeholder="buscar" />;
 }
 
 export { Search };

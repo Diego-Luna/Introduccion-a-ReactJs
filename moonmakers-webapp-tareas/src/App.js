@@ -1,5 +1,3 @@
-// import './App.css';
-
 import React from "react";
 
 import { TareasCounter } from "./components/TareasCounter";
@@ -8,18 +6,20 @@ import { TareasList } from "./components/TareasList";
 import { Item } from "./components/Item";
 import { CreateButton } from "./components/CreateButton";
 
+import "./App.css"
+
 const tareas = [
   {
     text: "Llamar a atencion al cliente",
-    completes: false,
+    completed: false,
   },
   {
     text: "Cortarse el pelo",
-    completes: false,
+    completed: false,
   },
   {
     text: "Ver el ultimo video de MoonMakers",
-    completes: false,
+    completed: false,
   },
 ];
 
@@ -33,7 +33,7 @@ function App() {
 
       <TareasList>
         {tareas.map((t) => (
-          <Item text={t.text} key={t.text} />
+          <Item completed={t.completed} text={t.text} key={t.text} />
         ))}
       </TareasList>
 
