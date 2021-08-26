@@ -6,9 +6,9 @@ import { TareasList } from "./components/TareasList";
 import { Item } from "./components/Item";
 import { CreateButton } from "./components/CreateButton";
 
-import "./App.css"
+import "./App.css";
 
-const tareas = [
+const defaultTareas = [
   {
     text: "Llamar a atencion al cliente",
     completed: false,
@@ -24,17 +24,36 @@ const tareas = [
 ];
 
 function App() {
+  const [tareas, setTareas] = React.useState(defaultTareas);
+
+  // para crear un estado en una funciona, con react hooks
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const completesTareas = tareas.filter(
+    (tareas) => tareas.completed === true
+  ).length;
+
+  const totalTareas = tareas.length;
+
+  const filterTodos = tareas.filter((t) => {
+    return t.text.toLowerCase().includes(searchValue.toLowerCase());
+  });
+
   return (
     // ponemos una etiqueta invisible
     <React.Fragment>
-      <TareasCounter />
+      <TareasCounter total={totalTareas} completed={completesTareas} />
 
-      <Search />
+      <Search searchValue={searchValue} setSearchValue={setSearchValue} />
 
       <TareasList>
-        {tareas.map((t) => (
-          <Item completed={t.completed} text={t.text} key={t.text} />
-        ))}
+        {filterTodos
+          ? filterTodos.map((t) => (
+              <Item completed={t.completed} text={t.text} key={t.text} />
+            ))
+          : tareas.map((t, i) => (
+              <Item completed={t.completed} text={t.text} key={i} />
+            ))}
       </TareasList>
 
       <CreateButton />
