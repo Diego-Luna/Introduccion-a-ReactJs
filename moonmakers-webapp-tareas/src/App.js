@@ -39,6 +39,21 @@ function App() {
     return t.text.toLowerCase().includes(searchValue.toLowerCase());
   });
 
+  const completeTarea = (text) => {
+    // buscamos la tarea
+    const tareaIndex = tareas.findIndex((t) => t.text === text);
+    const newTareas = [...tareas];
+
+    newTareas[tareaIndex].completed = true;
+
+    setTareas(newTareas);
+  };
+
+  function deleteTarea(text) {
+    const newTodos = tareas.filter((todo) => todo.text !== text);
+    setTareas(newTodos);
+  }
+
   return (
     // ponemos una etiqueta invisible
     <React.Fragment>
@@ -48,11 +63,23 @@ function App() {
 
       <TareasList>
         {filterTodos
-          ? filterTodos.map((t) => (
-              <Item completed={t.completed} text={t.text} key={t.text} />
+          ? filterTodos.map((t, i) => (
+              <Item
+                onDelete={() => deleteTarea(t.text)}
+                onComplete={() => completeTarea(t.text)}
+                completed={t.completed}
+                text={t.text}
+                key={i}
+              />
             ))
           : tareas.map((t, i) => (
-              <Item completed={t.completed} text={t.text} key={i} />
+              <Item
+                onDelete={() => deleteTarea(t.text)}
+                onComplete={() => completeTarea(t.text)}
+                completed={t.completed}
+                text={t.text}
+                key={i}
+              />
             ))}
       </TareasList>
 
