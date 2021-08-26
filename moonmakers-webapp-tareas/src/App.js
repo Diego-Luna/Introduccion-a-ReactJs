@@ -50,8 +50,8 @@ function App() {
   };
 
   function deleteTarea(text) {
-    const newTodos = tareas.filter((todo) => todo.text !== text);
-    setTareas(newTodos);
+    const newTareas = tareas.filter((todo) => todo.text !== text);
+    setTareas(newTareas);
   }
 
   return (
