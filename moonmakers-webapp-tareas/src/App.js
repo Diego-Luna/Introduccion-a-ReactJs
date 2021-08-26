@@ -6,7 +6,7 @@ import { TareasList } from "./components/TareasList";
 import { Item } from "./components/Item";
 import { CreateButton } from "./components/CreateButton";
 
-import "./App.css";
+import "./css/App.css";
 
 const defaultTareas = [
   {
@@ -35,7 +35,7 @@ function App() {
 
   const totalTareas = tareas.length;
 
-  const filterTodos = tareas.filter((t) => {
+  const filterTareas = tareas.filter((t) => {
     return t.text.toLowerCase().includes(searchValue.toLowerCase());
   });
 
@@ -50,7 +50,7 @@ function App() {
   };
 
   function deleteTarea(text) {
-    const newTareas = tareas.filter((todo) => todo.text !== text);
+    const newTareas = tareas.filter((t) => t.text !== text);
     setTareas(newTareas);
   }
 
@@ -62,8 +62,8 @@ function App() {
       <Search searchValue={searchValue} setSearchValue={setSearchValue} />
 
       <TareasList>
-        {filterTodos
-          ? filterTodos.map((t, i) => (
+        {filterTareas
+          ? filterTareas.map((t, i) => (
               <Item
                 onDelete={() => deleteTarea(t.text)}
                 onComplete={() => completeTarea(t.text)}
