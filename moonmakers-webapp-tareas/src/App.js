@@ -8,23 +8,34 @@ import { CreateButton } from "./components/CreateButton";
 
 import "./css/App.css";
 
-const defaultTareas = [
-  {
-    text: "Llamar a atencion al cliente",
-    completed: false,
-  },
-  {
-    text: "Cortarse el pelo",
-    completed: false,
-  },
-  {
-    text: "Ver el ultimo video de MoonMakers",
-    completed: false,
-  },
-];
+// const defaultTareas = [
+//   {
+//     text: "Llamar a atencion al cliente",
+//     completed: false,
+//   },
+//   {
+//     text: "Cortarse el pelo",
+//     completed: false,
+//   },
+//   {
+//     text: "Ver el ultimo video de MoonMakers",
+//     completed: false,
+//   },
+// ];
 
 function App() {
-  const [tareas, setTareas] = React.useState(defaultTareas);
+  const localStorageTareas = localStorage.getItem("TAREAS_V1");
+
+  let parsedTareas = [];
+
+  if (!localStorageTareas) {
+    localStorage.setItem("TAREAS_V1", JSON.stringify([]));
+    parsedTareas = [];
+  } else {
+    parsedTareas = JSON.parse(localStorageTareas);
+  }
+
+  const [tareas, setTareas] = React.useState(parsedTareas);
 
   // para crear un estado en una funciona, con react hooks
   const [searchValue, setSearchValue] = React.useState("");
@@ -39,6 +50,12 @@ function App() {
     return t.text.toLowerCase().includes(searchValue.toLowerCase());
   });
 
+  function saveTareas(newTareas){
+    const stringifiedTareas = JSON.stringify(newTareas);
+    localStorage.setItem("TAREAS_V1", stringifiedTareas);
+    setTareas(newTareas);
+  }
+
   const completeTarea = (text) => {
     // buscamos la tarea
     const tareaIndex = tareas.findIndex((t) => t.text === text);
@@ -46,13 +63,14 @@ function App() {
 
     newTareas[tareaIndex].completed = true;
 
-    setTareas(newTareas);
+    saveTareas(newTareas);
   };
 
   function deleteTarea(text) {
     const newTareas = tareas.filter((t) => t.text !== text);
-    setTareas(newTareas);
+    saveTareas(newTareas);
   }
+
 
   return (
     // ponemos una etiqueta invisible
