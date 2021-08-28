@@ -9,52 +9,48 @@ import { Item } from "../components/Item";
 import { CreateButton } from "../components/CreateButton";
 
 function AppUI() {
+  // nuevo hook,
+  const { error, loading, tareas, filterTareas, deleteTarea, completeTarea } =
+    React.useContext(TareaContex);
+
   return (
     // ponemos una etiqueta invisible
     <React.Fragment>
       <TareasCounter />
-      {/* <TareasCounter total={totalTareas} completed={completesTareas} /> */}
 
       <Search />
-      {/* <Search searchValue={searchValue} setSearchValue={setSearchValue} /> */}
 
-      <TareaContex.Consumer>
-        {/* traemos el contexto de nuestra app, con el consumer */}
-        {({
-          error,
-          loading,
-          tareas,
-          filterTareas,
-          deleteTarea,
-          completeTarea,
-        }) => (
-          <TareasList>
-            {error && <p>Estamos cargando</p>}
-            {loading && <p>Estamos cargando</p>}
-            {!loading && !tareas.length && <p>Crea tu primer tarea</p>}
+      {/* esta es una opcion */}
+      {/* <TareaContex.Consumer> */}
+      {/* traemos el contexto de nuestra app, con el consumer */}
+      {/* {() => ( */}
+      <TareasList>
+        {error && <p>Estamos cargando</p>}
+        {loading && <p>Estamos cargando</p>}
+        {!loading && !tareas.length && <p>Crea tu primer tarea</p>}
 
-            {filterTareas
-              ? filterTareas.map((t, i) => (
-                  <Item
-                    onDelete={() => deleteTarea(t.text)}
-                    onComplete={() => completeTarea(t.text)}
-                    completed={t.completed}
-                    text={t.text}
-                    key={i}
-                  />
-                ))
-              : tareas.map((t, i) => (
-                  <Item
-                    onDelete={() => deleteTarea(t.text)}
-                    onComplete={() => completeTarea(t.text)}
-                    completed={t.completed}
-                    text={t.text}
-                    key={i}
-                  />
-                ))}
-          </TareasList>
-        )}
-      </TareaContex.Consumer>
+        {filterTareas
+          ? filterTareas.map((t, i) => (
+              <Item
+                onDelete={() => deleteTarea(t.text)}
+                onComplete={() => completeTarea(t.text)}
+                completed={t.completed}
+                text={t.text}
+                key={i}
+              />
+            ))
+          : tareas.map((t, i) => (
+              <Item
+                onDelete={() => deleteTarea(t.text)}
+                onComplete={() => completeTarea(t.text)}
+                completed={t.completed}
+                text={t.text}
+                key={i}
+              />
+            ))}
+      </TareasList>
+      {/* )} */}
+      {/* </TareaContex.Consumer> */}
 
       <CreateButton />
     </React.Fragment>
