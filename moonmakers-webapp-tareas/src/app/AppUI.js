@@ -1,7 +1,9 @@
 import React from "react";
 
+// el estado de nuestra aplicacion
 import { TareaContex } from "../tareaContex";
 
+// los componentes
 import { TareasCounter } from "../components/TareasCounter";
 import { Search } from "../components/Search";
 import { TareasList } from "../components/TareasList";
@@ -11,6 +13,12 @@ import { CreateButton } from "../components/CreateButton";
 // traemos anuestro modal
 import { Modal } from "../components/Modal";
 import { TareaFrom } from "../components/Form";
+
+// los componentes de nuestro loading skeleton
+
+import { EmptyTareas } from "../components/Skeleton/EmptyTareas";
+import { TareaError } from "../components/Skeleton/TareaError";
+import { TareasLoading } from "../components/Skeleton/TareasLoading";
 
 function AppUI() {
   // nuevo hook,
@@ -22,7 +30,7 @@ function AppUI() {
     deleteTarea,
     completeTarea,
     openModal,
-    setOpenModal,
+    // setOpenModal,
   } = React.useContext(TareaContex);
 
   return (
@@ -35,9 +43,14 @@ function AppUI() {
       {/* traemos el contexto de nuestra app, con el consumer */}
       {/* {() => ( */}
       <TareasList>
-        {error && <p>Estamos cargando</p>}
-        {loading && <p>Estamos cargando</p>}
-        {!loading && !tareas.length && <p>Crea tu primer tarea</p>}
+        {error && <TareaError error={error} />}
+        {loading && (
+          <React.Fragment>
+            <TareasLoading /> <TareasLoading /> <TareasLoading />
+            <TareasLoading />
+          </React.Fragment>
+        )}
+        {!loading && !tareas.length && <EmptyTareas />}
 
         {filterTareas
           ? filterTareas.map((t, i) => (
