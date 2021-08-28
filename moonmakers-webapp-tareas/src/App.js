@@ -26,30 +26,54 @@ import "./css/App.css";
 // custom React Hooks
 
 function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
 
-  let parsedItem = [];
+  const [item, setItem] = React.useState(initialValue);
 
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = [];
-  } else {
-    parsedItem = JSON.parse(localStorageItem);
-  }
+  // esto es para emular una llamada a una API extarna al navegador
+  React.useEffect(() => {
+    setTimeout(() => {
+      try {
+        const localStorageItem = localStorage.getItem(itemName);
 
-  const [item, setItem] = React.useState(parsedItem);
+        let parsedItem = [];
+
+        if (!localStorageItem) {
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = [];
+        } else {
+          parsedItem = JSON.parse(localStorageItem);
+        }
+
+        setItem(parsedItem);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+      }
+    }, 1000);
+  });
 
   function saveItem(newItem) {
-    const stringifiedItem = JSON.stringify(newItem);
-    localStorage.setItem(itemName, stringifiedItem);
-    setItem(newItem);
+    try {
+      const stringifiedItem = JSON.stringify(newItem);
+      localStorage.setItem(itemName, stringifiedItem);
+      setItem(newItem);
+    } catch (error) {
+      setError(error);
+    }
   }
 
-  return [item, saveItem];
+  return { item, saveItem, loading, error };
 }
 
 function App() {
-  const [tareas, saveTareas] = useLocalStorage("TAREAS_V1", []);
+  const {
+    item: tareas,
+    saveItem: saveTareas,
+    loading,
+    error,
+  } = useLocalStorage("TAREAS_V1", []);
 
   // para crear un estado en una funciona, con react hooks
   const [searchValue, setSearchValue] = React.useState("");
@@ -87,6 +111,10 @@ function App() {
       <Search searchValue={searchValue} setSearchValue={setSearchValue} />
 
       <TareasList>
+        {error && <p>Estamos cargando</p>}
+        {loading && <p>Estamos cargando</p>}
+        {!loading && !tareas.length && <p>Crea tu primer tarea</p>}
+
         {filterTareas
           ? filterTareas.map((t, i) => (
               <Item
