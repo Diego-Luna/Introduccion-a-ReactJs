@@ -15,6 +15,9 @@ function TareaProvider(props) {
   // para crear un estado en una funciona, con react hooks
   const [searchValue, setSearchValue] = React.useState("");
 
+  // creamos un nuevo estado para nuestro modal
+  const  [openModal, setOpenModal] = React.useState(false);
+
   const completesTareas = tareas.filter(
     (tareas) => tareas.completed === true
   ).length;
@@ -53,6 +56,8 @@ function TareaProvider(props) {
         filterTareas,
         completesTareas,
         deleteTarea,
+        openModal,
+        setOpenModal
       }}
     >
       {props.children}
