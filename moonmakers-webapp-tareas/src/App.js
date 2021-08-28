@@ -23,19 +23,33 @@ import "./css/App.css";
 //   },
 // ];
 
-function App() {
-  const localStorageTareas = localStorage.getItem("TAREAS_V1");
+// custom React Hooks
 
-  let parsedTareas = [];
+function useLocalStorage(itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName);
 
-  if (!localStorageTareas) {
-    localStorage.setItem("TAREAS_V1", JSON.stringify([]));
-    parsedTareas = [];
+  let parsedItem = [];
+
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    parsedItem = [];
   } else {
-    parsedTareas = JSON.parse(localStorageTareas);
+    parsedItem = JSON.parse(localStorageItem);
   }
 
-  const [tareas, setTareas] = React.useState(parsedTareas);
+  const [item, setItem] = React.useState(parsedItem);
+
+  function saveItem(newItem) {
+    const stringifiedItem = JSON.stringify(newItem);
+    localStorage.setItem(itemName, stringifiedItem);
+    setItem(newItem);
+  }
+
+  return [item, saveItem];
+}
+
+function App() {
+  const [tareas, saveTareas] = useLocalStorage("TAREAS_V1", []);
 
   // para crear un estado en una funciona, con react hooks
   const [searchValue, setSearchValue] = React.useState("");
@@ -49,12 +63,6 @@ function App() {
   const filterTareas = tareas.filter((t) => {
     return t.text.toLowerCase().includes(searchValue.toLowerCase());
   });
-
-  function saveTareas(newTareas){
-    const stringifiedTareas = JSON.stringify(newTareas);
-    localStorage.setItem("TAREAS_V1", stringifiedTareas);
-    setTareas(newTareas);
-  }
 
   const completeTarea = (text) => {
     // buscamos la tarea
@@ -70,7 +78,6 @@ function App() {
     const newTareas = tareas.filter((t) => t.text !== text);
     saveTareas(newTareas);
   }
-
 
   return (
     // ponemos una etiqueta invisible
