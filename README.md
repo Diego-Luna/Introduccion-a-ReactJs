@@ -182,3 +182,17 @@ function userSettings() {
 
 - **storage.clear();**
   borra tareas los registros guardados en local.
+
+## Manejo de efectos
+
+🔂 Podemos enviar un array vacío para decirle a nuestro efecto solo se ejecute una vez, cuando recién hacemos el primer render de nuestro componente.
+
+👂 O también podemos enviar un array con distintos elementos para decirle a nuestro efecto que no solo ejecute el efecto en el primer render, sino también cuando haya cambios en esos elementos del array.
+
+🔁 Si no enviamos ningún array como segundo argumento de nuestro efecto, esta función se ejecutará cada vez que nuestro componente haga render (es decir, cada vez que haya cambios en cualquiera de nuestros estados).
+
+❓ ¿Cuál de estas opciones crees que debimos usar en nuestro efecto dentro de useLocalStorage?
+
+Al menos por ahora, lo mejor habría sido enviar un array vacío para que nuestro efecto solo se ejecute una vez, en el primer amado a nuestro custom hook / render de nuestro componente. 😌
+
+Afortunadamente, como todo el código del useEffect está envuelto en un setTimeout, cada ejecución del código de efecto tarda 1 segundo en volver a ejecutarse, por lo que la app no va a crashear. 😓
