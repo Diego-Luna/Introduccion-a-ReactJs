@@ -16,7 +16,7 @@ function TareaProvider(props) {
   const [searchValue, setSearchValue] = React.useState("");
 
   // creamos un nuevo estado para nuestro modal
-  const  [openModal, setOpenModal] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
 
   const completesTareas = tareas.filter(
     (tareas) => tareas.completed === true
@@ -27,6 +27,15 @@ function TareaProvider(props) {
   const filterTareas = tareas.filter((t) => {
     return t.text.toLowerCase().includes(searchValue.toLowerCase());
   });
+
+  const addTarea = (text) => {
+    // buscamos la tarea
+    const newTareas = [...tareas];
+
+    newTareas.push({ completed: false, text });
+
+    saveTareas(newTareas);
+  };
 
   const completeTarea = (text) => {
     // buscamos la tarea
@@ -50,14 +59,15 @@ function TareaProvider(props) {
         error,
         tareas,
         totalTareas,
-        completeTarea,
         searchValue,
-        setSearchValue,
         filterTareas,
         completesTareas,
-        deleteTarea,
         openModal,
-        setOpenModal
+        setOpenModal,
+        addTarea,
+        deleteTarea,
+        completeTarea,
+        setSearchValue,
       }}
     >
       {props.children}
@@ -65,4 +75,4 @@ function TareaProvider(props) {
   );
 }
 
-export {TareaContex, TareaProvider};
+export { TareaContex, TareaProvider };

@@ -7,8 +7,10 @@ import { Search } from "../components/Search";
 import { TareasList } from "../components/TareasList";
 import { Item } from "../components/Item";
 import { CreateButton } from "../components/CreateButton";
+
 // traemos anuestro modal
 import { Modal } from "../components/Modal";
+import { TareaFrom } from "../components/Form";
 
 function AppUI() {
   // nuevo hook,
@@ -63,7 +65,7 @@ function AppUI() {
       {/* cuando openModal sea true, no renderice el componente Modal */}
       {!!openModal && (
         <Modal>
-          <p>{tareas[0]?.text}</p>
+          <TareaFrom />
         </Modal>
       )}
 
